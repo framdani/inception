@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+  mariadb:
+    build: ./requirements/mariadb
+    container_name: mariadb
+    networks:
+      - myapp-network
+    volumes:
+      - database:/var/lib/mysql/
+    env_file:
+      - .env
+    restart: unless-stopped
+  nginx:
+    build: ./requirements/nginx
+    container_name: nginx
+    depends_on:
+      - wordpress
+    ports:
+      - 443:443
+    networks:
+      - myapp-network
+    volumes:
+      - html:/var/www/html
+    restart: unless-stopped
+  wordpress:
+    build: ./requirements/wordpress
+    container_name: wordpress
+    depends_on:
+      - mariadb
+    networks:
+      - myapp-network
+    volumes:
+      - html:/var/www/html
+    env_file:
+      - .env
+    restart: unless-stopped
+
+networks:
+    myapp-network:
+        driver: bridge
+volumes:
+  html :
+    driver: local
+    driver_opts:
+      type: none
+      o: bind 
+      device : /home/framdani/data/html
+  database : 
+    driver: local
+    driver_opts:
+      type: none
+      o: bind 
+      device : /home/framdani/data/DB
