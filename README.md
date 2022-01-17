@@ -45,7 +45,7 @@ docker-compose up #it builds the images if they are not located locally and star
 docker-compose ps #list all the containers in the current docker-compose file.
 docker-compose down #it stops all the services and cleans up the containers, netwroks and images.
 ```
-### Docker network and why it is important
+### Docker network
 
 To make containers connect to each other and share files and
 ressources we should create a network.There are various kinds of netwrok drivers : bridge, overlay.
